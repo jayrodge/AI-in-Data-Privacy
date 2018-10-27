@@ -2,6 +2,7 @@ import spacy
 import os
 import re
 import pandas as pd
+from tqdm import tqdm
 from spacy.lang.en.stop_words import STOP_WORDS
 
 nlp = spacy.load("en")
@@ -11,7 +12,7 @@ dataset = pd.DataFrame(columns=["id", "text"])
 y = pd.read_csv("training_labels.csv", usecols=["id", "score"])
 filenames = os.listdir(path)
 
-for index in range(len(filenames)):
+for index in tqdm(range(len(filenames))):
     filename = filenames[index]
     document = open(path+"/"+filename, encoding='utf-8', errors='ignore').read()
     document = nlp(document)
@@ -25,3 +26,5 @@ y["id"] = y["id"].astype("uint32")
 
 final_dataset = pd.merge(dataset, y, on='id')
 final_dataset["score"] = final_dataset["score"].astype("uint8")
+
+final_dataset.to_csv("final_dataset.csv", encoding='utf-8', index = False)
