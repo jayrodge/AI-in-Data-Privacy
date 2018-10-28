@@ -1,13 +1,18 @@
 from __future__ import unicode_literals, print_function
 import spacy, csv 
-from textstat.textstat import textstatistics, easy_word_set, legacy_round 
-
 import nltk
 import re
 import io
 from nltk.stem import PorterStemmer
-from nltk.tokenize import sent_tokenize, word_tokenize
 from spacy.matcher import PhraseMatcher
+from nltk.tokenize import sent_tokenize, word_tokenize
+from textstat.textstat import textstatistics, easy_word_set, legacy_round
+
+# To remove unnecessary spaces and commas
+def multi_replace(text, replacements):
+    substrs = sorted(replacements, key=len, reverse=True)
+    regexp = re.compile('|'.join(map(re.escape, substrs)))
+    return regexp.sub(lambda match: replacements[match.group(0)], text)
 
 # Splits the text into sentences, using 
 # Spacy's sentence segmentation which can 
@@ -153,5 +158,4 @@ def dale_chall_readability_score(text):
 
         raw_score += 3.6365
 
-    return legacy_round(raw_score, 2)         
-        
+    return legacy_round(raw_score, 2)
