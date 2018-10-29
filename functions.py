@@ -21,8 +21,32 @@ def break_sentences(text):
     nlp = spacy.load('en') 
     doc = nlp(text) 
     sentences = [sent.string.strip() for sent in doc.sents]
-    return sentences 
-    
+    return sentences
+
+# Return the number of email addresses mentioned in the text
+def number_of_email_addresses(text):
+    regex = re.compile("[\w\.-]+@[\w\.-]+\.\w+")
+    return len(set(re.findall(regex, text)))
+
+# Indicate whether the document includes the word 'cookies' or variants
+def use_cookies(text):
+    nlp = spacy.load('en')
+    text = nlp(text)
+    ps = PorterStemmer()
+    for word in text:
+        if(ps.stem(word.text) == "cooki"):
+            return 1
+    return 0
+
+# Indicate whether the document includes the word 'minor'
+def is_minor(text):
+    regex = re.compile("(?:^|\W)minor(?:$|\W)")
+    m = re.search(regex, text)
+    if m is None:
+        return 0
+    else:
+        return 1
+
 # Returns Number of Words in the text 
 def word_count(text): 
     sentences = break_sentences(text) 
@@ -59,8 +83,7 @@ def avg_syllables_per_word(text):
     return legacy_round(ASPW, 1) 
     
 # Return total Difficult Words in a text 
-def difficult_words(text): 
-
+def difficult_words(text):
     # Find all words in the text 
     words = [] 
     sentences = break_sentences(text) 
@@ -83,7 +106,7 @@ def difficult_words(text):
 # A word is polysyllablic if it has more than 3 syllables 
 # this functions returns the number of all such words 
 # present in the text 
-def poly_syllable_count(text): 
+def poly_syllable_count(text):
     count = 0
     words = [] 
     sentences = break_sentences(text) 
@@ -97,7 +120,7 @@ def poly_syllable_count(text):
             count += 1
     return count 
     
-def flesch_reading_ease(text): 
+def flesch_reading_ease(text):
     """ 
         Implements Flesch Formula: 
         Reading Ease score = 206.835 - (1.015 × ASL) - (84.6 × ASW) 
@@ -110,13 +133,13 @@ def flesch_reading_ease(text):
     FRE = 206.835 - float(1.015 * avg_sentence_length(text)) -float(84.6 * avg_syllables_per_word(text)) 
     return legacy_round(FRE, 2) 
     
-def gunning_fog(text): 
+def gunning_fog(text):
     per_diff_words = (difficult_words(text) / word_count(text) * 100) + 5
     grade = 0.4 * (avg_sentence_length(text) + per_diff_words) 
     return grade 
     
 
-def smog_index(text): 
+def smog_index(text):
     """ 
         Implements SMOG Formula / Grading 
         SMOG grading = 3 + ?polysyllable count. 
@@ -131,7 +154,7 @@ def smog_index(text):
     else: 
         return 0
         
-def dale_chall_readability_score(text): 
+def dale_chall_readability_score(text):
     """ 
         Implements Dale Challe Formula: 
         Raw score = 0.1579*(PDW) + 0.0496*(ASL) + 3.6365 
