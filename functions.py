@@ -24,9 +24,12 @@ def break_sentences(text):
     return sentences
 
 # Return the number of email addresses mentioned in the text
-def number_of_email_addresses(text):
+def is_email_addresses(text):
     regex = re.compile("[\w\.-]+@[\w\.-]+\.\w+")
-    return len(set(re.findall(regex, text)))
+    if len(set(re.findall(regex, text))) > 0:
+        return 1
+    else:
+        return 0
 
 # Indicate whether the document includes the word 'cookies' or variants
 def use_cookies(text):
