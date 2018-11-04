@@ -50,6 +50,38 @@ def is_minor(text):
     else:
         return 1
 
+def not_sell(text):
+    regex=re.compile(r"(not|never|n't)(.*)(sell)")
+    m=re.search(regex,text)
+    if m is None:
+        return 0
+    else:
+        return 1
+
+def not_share(text):
+    regex=re.compile(r"(not|never|n't)(.*)(share)")
+    m=re.search(regex,text)
+    if m is None:
+        return 0
+    else:
+        return 1
+
+def is_sell(text):
+    regex=re.compile(r'\w*[^(not|never)] sell(.*?)(information|personal|data|third)[ ]*\w*')
+    m=re.search(regex,text)
+    if m is None:
+        return 0
+    else:
+        return 1
+    
+def is_share(text):
+    regex=re.compile(r'share(d|s)*(.*?)data|personal|information|third')
+    m=re.search(regex,text)
+    if m is None:
+        return 0
+    else:
+        return 1
+
 # Returns Number of Words in the text 
 def word_count(text): 
     sentences = break_sentences(text) 
