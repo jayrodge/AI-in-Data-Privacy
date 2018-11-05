@@ -89,7 +89,21 @@ def word_count(text):
     for sentence in sentences: 
         words += len([token for token in sentence]) 
     return words 
-    
+
+# Returns whether does it include "GeoLocation"
+def vendor(text):
+    regex=re.compile(r'vendor')
+    m = re.search(regex,text)
+    if m is None:
+        regex=re.compile(r'vender')
+        n=re.search(regex,text)
+        if n is None:
+            return 0
+        else:
+            return 1
+    else:
+        return 1    
+
 # Returns the number of sentences in the text 
 def sentence_count(text): 
     sentences = break_sentences(text) 
