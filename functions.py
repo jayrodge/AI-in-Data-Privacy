@@ -104,6 +104,14 @@ def vendor(text):
     else:
         return 1    
 
+def location(text):
+    regex=re.compile(r'location')
+    m = re.search(regex,text)
+    if m is None:
+        return 0
+    else:
+        return 1  
+
 # Returns the number of sentences in the text 
 def sentence_count(text): 
     sentences = break_sentences(text) 
