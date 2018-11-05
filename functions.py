@@ -92,15 +92,10 @@ def word_count(text):
 
 # Returns whether does it include "GeoLocation"
 def vendor(text):
-    regex=re.compile(r'vendor')
+    regex=re.compile(r'vendor|vender')
     m = re.search(regex,text)
     if m is None:
-        regex=re.compile(r'vender')
-        n=re.search(regex,text)
-        if n is None:
-            return 0
-        else:
-            return 1
+        return 0
     else:
         return 1    
 
